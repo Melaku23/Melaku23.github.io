@@ -1,0 +1,7 @@
+# Operating System Junk Files
+.DS_Store
+Thumbs.db
+
+# Security & Local Settings (Future-proofing)
+.env
+*.log
