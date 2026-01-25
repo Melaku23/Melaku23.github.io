@@ -1,0 +1,31 @@
+name: Build Resume
+
+on:
+  push:
+    branches: [ "main" ]
+
+permissions:
+  contents: write
+
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Compile LaTeX document
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: cv.tex
+          # The action outputs cv.pdf automatically
+
+      - name: Commit and Push PDF
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          # Force add the PDF even if it's ignored
+          git add -f cv.pdf
+          # Commit only if there are changes
+          git commit -m "Auto-update cv.pdf from LaTeX" || echo "No changes to commit"
+          git push
